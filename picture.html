@@ -1,0 +1,192 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "mystery", "label": "mystery", "shape": "dot", "size": 60, "title": "mystery"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "action", "label": "action", "shape": "dot", "size": 85, "title": "action"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "sci-fi", "label": "sci-fi", "shape": "dot", "size": 50, "title": "sci-fi"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "fantasy", "label": "fantasy", "shape": "dot", "size": 75, "title": "fantasy"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "psychological", "label": "psychological", "shape": "dot", "size": 75, "title": "psychological"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "drama", "label": "drama", "shape": "dot", "size": 95, "title": "drama"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "horror", "label": "horror", "shape": "dot", "size": 45, "title": "horror"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "supernatural", "label": "supernatural", "shape": "dot", "size": 55, "title": "supernatural"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "philosophical", "label": "philosophical", "shape": "dot", "size": 70, "title": "philosophical"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "magic", "label": "magic", "shape": "dot", "size": 60, "title": "magic"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "romance", "label": "romance", "shape": "dot", "size": 65, "title": "romance"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "identity", "label": "identity", "shape": "dot", "size": 75, "title": "identity"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "adventure", "label": "adventure", "shape": "dot", "size": 35, "title": "adventure"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "cyberpunk", "label": "cyberpunk", "shape": "dot", "size": 25, "title": "cyberpunk"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "mecha", "label": "mecha", "shape": "dot", "size": 45, "title": "mecha"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "war", "label": "war", "shape": "dot", "size": 35, "title": "war"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "music", "label": "music", "shape": "dot", "size": 40, "title": "music"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "family", "label": "family", "shape": "dot", "size": 30, "title": "family"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "friendship", "label": "friendship", "shape": "dot", "size": 65, "title": "friendship"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "time travel", "label": "time travel", "shape": "dot", "size": 10, "title": "time travel"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "samurai", "label": "samurai", "shape": "dot", "size": 25, "title": "samurai"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "historical", "label": "historical", "shape": "dot", "size": 45, "title": "historical"}, {"color": "#FFA500", "font": {"color": "white"}, "group": 1, "id": "comedy", "label": "comedy", "shape": "dot", "size": 15, "title": "comedy"}]);
+                  edges = new vis.DataSet([{"from": "mystery", "title": "Co-occurrence: 3", "to": "action", "value": 3, "width": 1.5}, {"from": "mystery", "title": "Co-occurrence: 1", "to": "sci-fi", "value": 1, "width": 0.5}, {"from": "mystery", "title": "Co-occurrence: 4", "to": "fantasy", "value": 4, "width": 2.0}, {"from": "mystery", "title": "Co-occurrence: 4", "to": "psychological", "value": 4, "width": 2.0}, {"from": "mystery", "title": "Co-occurrence: 1", "to": "drama", "value": 1, "width": 0.5}, {"from": "mystery", "title": "Co-occurrence: 2", "to": "horror", "value": 2, "width": 1.0}, {"from": "mystery", "title": "Co-occurrence: 4", "to": "supernatural", "value": 4, "width": 2.0}, {"from": "mystery", "title": "Co-occurrence: 2", "to": "philosophical", "value": 2, "width": 1.0}, {"from": "mystery", "title": "Co-occurrence: 2", "to": "magic", "value": 2, "width": 1.0}, {"from": "mystery", "title": "Co-occurrence: 2", "to": "romance", "value": 2, "width": 1.0}, {"from": "mystery", "title": "Co-occurrence: 1", "to": "identity", "value": 1, "width": 0.5}, {"from": "mystery", "title": "Co-occurrence: 2", "to": "adventure", "value": 2, "width": 1.0}, {"from": "philosophical", "title": "Co-occurrence: 2", "to": "fantasy", "value": 2, "width": 1.0}, {"from": "philosophical", "title": "Co-occurrence: 2", "to": "psychological", "value": 2, "width": 1.0}, {"from": "philosophical", "title": "Co-occurrence: 4", "to": "drama", "value": 4, "width": 2.0}, {"from": "philosophical", "title": "Co-occurrence: 1", "to": "horror", "value": 1, "width": 0.5}, {"from": "philosophical", "title": "Co-occurrence: 1", "to": "supernatural", "value": 1, "width": 0.5}, {"from": "philosophical", "title": "Co-occurrence: 2", "to": "magic", "value": 2, "width": 1.0}, {"from": "philosophical", "title": "Co-occurrence: 4", "to": "cyberpunk", "value": 4, "width": 2.0}, {"from": "philosophical", "title": "Co-occurrence: 6", "to": "action", "value": 6, "width": 3.0}, {"from": "philosophical", "title": "Co-occurrence: 6", "to": "identity", "value": 6, "width": 3.0}, {"from": "philosophical", "title": "Co-occurrence: 2", "to": "sci-fi", "value": 2, "width": 1.0}, {"from": "philosophical", "title": "Co-occurrence: 2", "to": "mecha", "value": 2, "width": 1.0}, {"from": "philosophical", "title": "Co-occurrence: 1", "to": "war", "value": 1, "width": 0.5}, {"from": "philosophical", "title": "Co-occurrence: 1", "to": "adventure", "value": 1, "width": 0.5}, {"from": "music", "title": "Co-occurrence: 1", "to": "mecha", "value": 1, "width": 0.5}, {"from": "music", "title": "Co-occurrence: 1", "to": "sci-fi", "value": 1, "width": 0.5}, {"from": "music", "title": "Co-occurrence: 1", "to": "action", "value": 1, "width": 0.5}, {"from": "music", "title": "Co-occurrence: 1", "to": "drama", "value": 1, "width": 0.5}, {"from": "music", "title": "Co-occurrence: 1", "to": "fantasy", "value": 1, "width": 0.5}, {"from": "music", "title": "Co-occurrence: 1", "to": "magic", "value": 1, "width": 0.5}, {"from": "music", "title": "Co-occurrence: 1", "to": "family", "value": 1, "width": 0.5}, {"from": "music", "title": "Co-occurrence: 1", "to": "friendship", "value": 1, "width": 0.5}, {"from": "time travel", "title": "Co-occurrence: 1", "to": "romance", "value": 1, "width": 0.5}, {"from": "time travel", "title": "Co-occurrence: 1", "to": "friendship", "value": 1, "width": 0.5}, {"from": "cyberpunk", "title": "Co-occurrence: 3", "to": "action", "value": 3, "width": 1.5}, {"from": "cyberpunk", "title": "Co-occurrence: 4", "to": "identity", "value": 4, "width": 2.0}, {"from": "cyberpunk", "title": "Co-occurrence: 2", "to": "sci-fi", "value": 2, "width": 1.0}, {"from": "cyberpunk", "title": "Co-occurrence: 1", "to": "psychological", "value": 1, "width": 0.5}, {"from": "friendship", "title": "Co-occurrence: 2", "to": "romance", "value": 2, "width": 1.0}, {"from": "friendship", "title": "Co-occurrence: 2", "to": "action", "value": 2, "width": 1.0}, {"from": "friendship", "title": "Co-occurrence: 1", "to": "identity", "value": 1, "width": 0.5}, {"from": "friendship", "title": "Co-occurrence: 1", "to": "samurai", "value": 1, "width": 0.5}, {"from": "friendship", "title": "Co-occurrence: 1", "to": "historical", "value": 1, "width": 0.5}, {"from": "friendship", "title": "Co-occurrence: 4", "to": "fantasy", "value": 4, "width": 2.0}, {"from": "friendship", "title": "Co-occurrence: 1", "to": "supernatural", "value": 1, "width": 0.5}, {"from": "friendship", "title": "Co-occurrence: 2", "to": "drama", "value": 2, "width": 1.0}, {"from": "friendship", "title": "Co-occurrence: 1", "to": "comedy", "value": 1, "width": 0.5}, {"from": "friendship", "title": "Co-occurrence: 3", "to": "magic", "value": 3, "width": 1.5}, {"from": "friendship", "title": "Co-occurrence: 1", "to": "family", "value": 1, "width": 0.5}, {"from": "samurai", "title": "Co-occurrence: 2", "to": "action", "value": 2, "width": 1.0}, {"from": "samurai", "title": "Co-occurrence: 1", "to": "identity", "value": 1, "width": 0.5}, {"from": "samurai", "title": "Co-occurrence: 2", "to": "historical", "value": 2, "width": 1.0}, {"from": "samurai", "title": "Co-occurrence: 1", "to": "drama", "value": 1, "width": 0.5}, {"from": "action", "title": "Co-occurrence: 2", "to": "mecha", "value": 2, "width": 1.0}, {"from": "action", "title": "Co-occurrence: 2", "to": "sci-fi", "value": 2, "width": 1.0}, {"from": "action", "title": "Co-occurrence: 4", "to": "drama", "value": 4, "width": 2.0}, {"from": "action", "title": "Co-occurrence: 7", "to": "identity", "value": 7, "width": 3.5}, {"from": "action", "title": "Co-occurrence: 2", "to": "historical", "value": 2, "width": 1.0}, {"from": "action", "title": "Co-occurrence: 8", "to": "fantasy", "value": 8, "width": 4.0}, {"from": "action", "title": "Co-occurrence: 2", "to": "supernatural", "value": 2, "width": 1.0}, {"from": "action", "title": "Co-occurrence: 1", "to": "psychological", "value": 1, "width": 0.5}, {"from": "action", "title": "Co-occurrence: 4", "to": "adventure", "value": 4, "width": 2.0}, {"from": "action", "title": "Co-occurrence: 2", "to": "magic", "value": 2, "width": 1.0}, {"from": "action", "title": "Co-occurrence: 2", "to": "romance", "value": 2, "width": 1.0}, {"from": "family", "title": "Co-occurrence: 1", "to": "drama", "value": 1, "width": 0.5}, {"from": "family", "title": "Co-occurrence: 1", "to": "historical", "value": 1, "width": 0.5}, {"from": "family", "title": "Co-occurrence: 1", "to": "fantasy", "value": 1, "width": 0.5}, {"from": "family", "title": "Co-occurrence: 1", "to": "magic", "value": 1, "width": 0.5}, {"from": "war", "title": "Co-occurrence: 2", "to": "mecha", "value": 2, "width": 1.0}, {"from": "war", "title": "Co-occurrence: 1", "to": "psychological", "value": 1, "width": 0.5}, {"from": "war", "title": "Co-occurrence: 1", "to": "historical", "value": 1, "width": 0.5}, {"from": "war", "title": "Co-occurrence: 1", "to": "drama", "value": 1, "width": 0.5}, {"from": "war", "title": "Co-occurrence: 1", "to": "fantasy", "value": 1, "width": 0.5}, {"from": "war", "title": "Co-occurrence: 1", "to": "adventure", "value": 1, "width": 0.5}, {"from": "drama", "title": "Co-occurrence: 1", "to": "fantasy", "value": 1, "width": 0.5}, {"from": "drama", "title": "Co-occurrence: 2", "to": "psychological", "value": 2, "width": 1.0}, {"from": "drama", "title": "Co-occurrence: 1", "to": "horror", "value": 1, "width": 0.5}, {"from": "drama", "title": "Co-occurrence: 1", "to": "supernatural", "value": 1, "width": 0.5}, {"from": "drama", "title": "Co-occurrence: 1", "to": "magic", "value": 1, "width": 0.5}, {"from": "drama", "title": "Co-occurrence: 3", "to": "mecha", "value": 3, "width": 1.5}, {"from": "drama", "title": "Co-occurrence: 2", "to": "sci-fi", "value": 2, "width": 1.0}, {"from": "drama", "title": "Co-occurrence: 2", "to": "identity", "value": 2, "width": 1.0}, {"from": "drama", "title": "Co-occurrence: 1", "to": "historical", "value": 1, "width": 0.5}, {"from": "drama", "title": "Co-occurrence: 2", "to": "comedy", "value": 2, "width": 1.0}, {"from": "drama", "title": "Co-occurrence: 1", "to": "romance", "value": 1, "width": 0.5}, {"from": "supernatural", "title": "Co-occurrence: 5", "to": "fantasy", "value": 5, "width": 2.5}, {"from": "supernatural", "title": "Co-occurrence: 4", "to": "psychological", "value": 4, "width": 2.0}, {"from": "supernatural", "title": "Co-occurrence: 2", "to": "horror", "value": 2, "width": 1.0}, {"from": "supernatural", "title": "Co-occurrence: 1", "to": "magic", "value": 1, "width": 0.5}, {"from": "supernatural", "title": "Co-occurrence: 1", "to": "romance", "value": 1, "width": 0.5}, {"from": "supernatural", "title": "Co-occurrence: 1", "to": "identity", "value": 1, "width": 0.5}, {"from": "magic", "title": "Co-occurrence: 6", "to": "fantasy", "value": 6, "width": 3.0}, {"from": "magic", "title": "Co-occurrence: 1", "to": "psychological", "value": 1, "width": 0.5}, {"from": "magic", "title": "Co-occurrence: 1", "to": "horror", "value": 1, "width": 0.5}, {"from": "magic", "title": "Co-occurrence: 2", "to": "adventure", "value": 2, "width": 1.0}, {"from": "horror", "title": "Co-occurrence: 2", "to": "fantasy", "value": 2, "width": 1.0}, {"from": "horror", "title": "Co-occurrence: 2", "to": "psychological", "value": 2, "width": 1.0}, {"from": "horror", "title": "Co-occurrence: 1", "to": "romance", "value": 1, "width": 0.5}, {"from": "horror", "title": "Co-occurrence: 1", "to": "identity", "value": 1, "width": 0.5}, {"from": "comedy", "title": "Co-occurrence: 1", "to": "romance", "value": 1, "width": 0.5}, {"from": "identity", "title": "Co-occurrence: 2", "to": "sci-fi", "value": 2, "width": 1.0}, {"from": "identity", "title": "Co-occurrence: 1", "to": "historical", "value": 1, "width": 0.5}, {"from": "identity", "title": "Co-occurrence: 1", "to": "mecha", "value": 1, "width": 0.5}, {"from": "identity", "title": "Co-occurrence: 2", "to": "psychological", "value": 2, "width": 1.0}, {"from": "identity", "title": "Co-occurrence: 3", "to": "fantasy", "value": 3, "width": 1.5}, {"from": "identity", "title": "Co-occurrence: 2", "to": "romance", "value": 2, "width": 1.0}, {"from": "romance", "title": "Co-occurrence: 4", "to": "fantasy", "value": 4, "width": 2.0}, {"from": "romance", "title": "Co-occurrence: 1", "to": "psychological", "value": 1, "width": 0.5}, {"from": "romance", "title": "Co-occurrence: 1", "to": "sci-fi", "value": 1, "width": 0.5}, {"from": "romance", "title": "Co-occurrence: 1", "to": "adventure", "value": 1, "width": 0.5}, {"from": "mecha", "title": "Co-occurrence: 2", "to": "psychological", "value": 2, "width": 1.0}, {"from": "mecha", "title": "Co-occurrence: 1", "to": "historical", "value": 1, "width": 0.5}, {"from": "mecha", "title": "Co-occurrence: 1", "to": "sci-fi", "value": 1, "width": 0.5}, {"from": "historical", "title": "Co-occurrence: 1", "to": "psychological", "value": 1, "width": 0.5}, {"from": "adventure", "title": "Co-occurrence: 5", "to": "fantasy", "value": 5, "width": 2.5}, {"from": "sci-fi", "title": "Co-occurrence: 1", "to": "psychological", "value": 1, "width": 0.5}, {"from": "psychological", "title": "Co-occurrence: 2", "to": "fantasy", "value": 2, "width": 1.0}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script type="text/javascript">
+  var network = window.network;
+
+  var defaultColor = '#FFA500';  // 橙色
+  var highlightColor = '#FF0000';  // 红色
+
+  function resetNodeColors() {
+    var allNodes = network.body.data.nodes.get();
+    allNodes.forEach(function(node) {
+      network.body.data.nodes.update({id: node.id, color: defaultColor});
+    });
+  }
+
+  network.on("selectEdge", function(params) {
+    resetNodeColors();
+    if (params.edges.length > 0) {
+      var edgeId = params.edges[0];
+      var edge = network.body.data.edges.get(edgeId);
+      var fromNode = edge.from;
+      var toNode = edge.to;
+
+      network.body.data.nodes.update([
+        {id: fromNode, color: highlightColor},
+        {id: toNode, color: highlightColor}
+      ]);
+    }
+  });
+
+  network.on("deselectEdge", function(params) {
+    // 取消选中时恢复所有节点颜色
+    resetNodeColors();
+  });
+
+  // 初始化时设置默认颜色
+  resetNodeColors();
+</script>
+</body>
+</html>
